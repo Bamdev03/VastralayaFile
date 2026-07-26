@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/instance_manager.dart';
-import 'package:vastralaya/screens/auth_ui/signin_screen.dart';
-import 'package:vastralaya/screens/auth_ui/splash_screen.dart';
-import 'package:vastralaya/screens/user_panel/main_screen.dart';
+import 'package:vastralaya/screens/auth_ui/login_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,11 +15,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-       
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
       ),
-      home: const SigninScreen(),
+      home: const LoginView(),
     );
   }
 }
