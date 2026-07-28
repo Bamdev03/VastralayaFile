@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+class RegisterView extends StatelessWidget {
+  const RegisterView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +16,23 @@ class LoginView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Welcome Back!",
+                    "Register",
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
                   ),
-                  const Gap(8),
-                  const Text(
-                    "Sign in to continue shopping",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-                  ),
                   const Gap(30),
+
+                  // name field
+                  TextFormField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.person_2_outlined),
+                      label: Text("Name"),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  Gap(15),
 
                   // email field
                   TextFormField(
@@ -48,13 +56,39 @@ class LoginView extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      suffixIcon: IconButton(onPressed: (){}, icon: Icon(Icons.visibility))
+                      suffixIcon: IconButton(onPressed: (){}, icon: Icon(Icons.visibility)),
+                    ),
+                  ),
+                  Gap(15),
+
+                  // phone field
+                  TextFormField(
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.phone_android_outlined),
+                      label: Text("Phone"),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+
+                  Gap(15),
+
+                  // Address field
+                  TextFormField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.location_on),
+                      label: Text("City"),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
 
                   Gap(25),
 
-                  //login button
+                  // register button
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -66,28 +100,29 @@ class LoginView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Text("Login", style: TextStyle(fontSize: 15),),
+                      child: Text("Register", style: TextStyle(fontSize: 15),),
                     ),
                   ),
 
                   Gap(30),
 
-                  // register link
+                  // login link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't have an account? ",
+                        "Already have an account? ",
                         style: TextStyle(color: Colors.black87, fontSize: 14),
                       ),
                       GestureDetector(
                         onTap: () {},
                         child: const Text(
-                          "Register",
+                          "Login",
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
