@@ -38,6 +38,9 @@ dependencies:
   get: ^4.7.3
   flutter_keyboard_visibility: ^6.0.0
   gap: ^3.0.1
+  dio: ^5.11.0
+  loader: ^1.0.0
+  flutter_overlay_loader: ^2.0.0
 
 dev_dependencies:
   flutter_test:
