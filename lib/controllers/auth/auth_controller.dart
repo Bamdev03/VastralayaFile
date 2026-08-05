@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:vastralaya/controllers/storage/storage_controller.dart';
 import 'package:vastralaya/models/auth/login_model.dart';
 import 'package:vastralaya/models/auth/register_model.dart';
 import 'package:vastralaya/routes/app_routes.dart';
@@ -22,6 +23,19 @@ class AuthController extends GetxController {
   ).obs;
 
   var isVisible = true.obs;
+
+  Future authCheck() async{
+
+    var storageController = Get.find<StorageController>();
+    final token = await storageController.getToken();
+    await Future.delayed(const Duration(seconds: 2));
+
+    if(token!=null){
+      Get.offNamed(AppRoutes.home);
+    }else {
+      Get.offNamed(AppRoutes.login);
+    }
+  }
 
   Future register(
     String name,
@@ -76,6 +90,11 @@ class AuthController extends GetxController {
       loginUser.value = LoginModel.fromJson(response.data);
 
       if (loginUser.value.success == true) {
+
+        var storageController = Get.find<StorageController>();
+        String? token = loginUser.value.token;
+        storageController.saveToken(token!);
+
         Get.snackbar("Success", "Logged in successfully");
       } else {
         Get.snackbar(
@@ -136,4 +155,6 @@ class AuthController extends GetxController {
   void toggleEye() {
     isVisible.value = !isVisible.value;
   }
+
+
 }

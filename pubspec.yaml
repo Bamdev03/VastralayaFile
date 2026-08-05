@@ -41,6 +41,9 @@ dependencies:
   dio: ^5.11.0
   loader: ^1.0.0
   flutter_overlay_loader: ^2.0.0
+  get_storage: ^2.1.1
+  image_picker: ^1.2.3
+  carousel_slider: ^5.1.2
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +75,7 @@ flutter:
     - assets/logo2.jpeg
     - assets/logo3.jpeg
     - assets/shop.jpeg
+    - images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

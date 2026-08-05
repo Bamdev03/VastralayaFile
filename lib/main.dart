@@ -3,7 +3,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:vastralaya/bindings/controller_binding.dart';
 import 'package:vastralaya/routes/app_pages.dart';
 import 'package:vastralaya/routes/app_routes.dart';
-import 'package:vastralaya/screens/auth_ui/login_view.dart';
 import 'package:vastralaya/screens/auth_ui/register_view.dart';
 
 void main() {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       ),
       home: RegisterView(),
       initialBinding: ControllerBinding(),
-      initialRoute: AppRoutes.register,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
     );
   }
