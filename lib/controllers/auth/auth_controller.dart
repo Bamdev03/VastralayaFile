@@ -28,7 +28,7 @@ class AuthController extends GetxController {
 
     var storageController = Get.find<StorageController>();
     final token = await storageController.getToken();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 4));
 
     if(token!=null){
       Get.offNamed(AppRoutes.home);
@@ -96,6 +96,7 @@ class AuthController extends GetxController {
         storageController.saveToken(token!);
 
         Get.snackbar("Success", "Logged in successfully");
+        Get.offAllNamed(AppRoutes.home);
       } else {
         Get.snackbar(
           "Failed",
