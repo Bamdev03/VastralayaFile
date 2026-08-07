@@ -6,8 +6,8 @@ import 'package:vastralaya/controllers/storage/storage_controller.dart';
 class ControllerBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<AuthController>(AuthController(),permanent: true);
     Get.put<StorageController>(StorageController(),permanent: true);
+    Get.put<AuthController>(AuthController(),permanent: true);
     Get.put<ProductController>(ProductController(),permanent: true);
   }
 }
