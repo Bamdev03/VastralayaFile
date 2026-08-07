@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vastralaya/controllers/product/product_controller.dart';
+import 'package:vastralaya/routes/app_routes.dart';
 import 'package:vastralaya/utils/app_constant.dart';
 
 class HomeView extends StatelessWidget {
@@ -114,80 +116,86 @@ class HomeView extends StatelessWidget {
                         final product =
                             productController.products.value.products[index];
 
-                        return Card(
-                          elevation: 3,
-                          color: AppConstant.cardColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 115,
-                                  width: double.infinity,
-                                  child: ClipRRect(
-                                    child: Image.network(
-                                      product.imageUrl.isNotEmpty
-                                          ? product.imageUrl.first
-                                          : "https://via.placeholder.com/300",
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-
-                                Gap(8),
-
-                                Text(
-                                  product.name ?? "",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    color: AppConstant.textPrimary,
-                                  ),
-                                ),
-
-                                Gap(4),
-
-                                Text(
-                                  "Rs. ${product.price}",
-                                  style: GoogleFonts.poppins(
-                                    color: AppConstant.priceColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                ),
-
-                                Gap(4),
-
-                                Text(
-                                  product.category ?? "",
-                                  style: GoogleFonts.poppins(
-                                    color: AppConstant.textSecondary,
-                                    fontSize: 13,
-                                  ),
-                                ),
-
-                                const Spacer(),
-
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: FilledButton(
-                                    style: ButtonStyle(
-                                      backgroundColor: WidgetStatePropertyAll(
-                                        AppConstant.appPrimaryColor,
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.productDetail);
+                            productController.fetchProductById(product.id!);
+                          },
+                          child: Card(
+                            elevation: 3,
+                            color: AppConstant.cardColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 115,
+                                    width: double.infinity,
+                                    child: ClipRRect(
+                                      child: Image.network(
+                                        product.imageUrl.isNotEmpty
+                                            ? product.imageUrl.first
+                                            : "https://via.placeholder.com/300",
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    onPressed: () {},
-                                    child: const Text("Add to Cart"),
                                   ),
-                                ),
-                              ],
+
+                                  Gap(8),
+
+                                  Text(
+                                    product.name ?? "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      color: AppConstant.textPrimary,
+                                    ),
+                                  ),
+
+                                  Gap(4),
+
+                                  Text(
+                                    "Rs. ${product.price}",
+                                    style: GoogleFonts.poppins(
+                                      color: AppConstant.priceColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+
+                                  Gap(4),
+
+                                  Text(
+                                    product.category ?? "",
+                                    style: GoogleFonts.poppins(
+                                      color: AppConstant.textSecondary,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+
+                                  const Spacer(),
+
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: FilledButton(
+                                      style: ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                          AppConstant.appPrimaryColor,
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: const Text("Add to Cart"),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

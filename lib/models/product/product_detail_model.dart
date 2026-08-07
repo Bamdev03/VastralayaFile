@@ -46,5 +46,4 @@ class ProductDetailModel {
             reviews: json["reviews"] == null ? [] : List<dynamic>.from(json["reviews"]!.map((x) => x)),
         );
     }
-
 }

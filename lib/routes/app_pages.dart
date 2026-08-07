@@ -4,6 +4,7 @@ import 'package:vastralaya/screens/auth_ui/login_view.dart';
 import 'package:vastralaya/screens/auth_ui/register_view.dart';
 import 'package:vastralaya/screens/splash_screen/splash_view.dart';
 import 'package:vastralaya/screens/user_panel/home_view.dart';
+import 'package:vastralaya/screens/user_panel/product_detail_view.dart';
 
 class AppPages {
   static var routes = [
@@ -12,5 +13,6 @@ class AppPages {
     GetPage(name: AppRoutes.login, page: () => LoginView()),
     GetPage(name: AppRoutes.splash, page: () => SplashView()),
     GetPage(name: AppRoutes.home, page: () => HomeView()),
+    GetPage(name: AppRoutes.productDetail, page: () => ProductDetailView()),
   ];
 }
