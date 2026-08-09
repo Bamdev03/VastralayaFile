@@ -29,4 +29,22 @@ class ProductService {
       rethrow;
     }
   }
+
+    // search product by name
+    static Future searchProduct(String name) async {
+    try {
+      final response = await ApiConnect.dio.get("/products/",queryParameters: {"name":name});
+      print(response.statusCode);
+      print(response.data);
+      return response;
+    } on DioException catch (e) {
+      print(e.response?.statusCode);
+      print(e.response?.data);
+      rethrow;
+    }
+  }
+
+
+
+
 }

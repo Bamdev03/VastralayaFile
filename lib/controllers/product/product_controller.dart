@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:vastralaya/models/product/product_detail_model.dart';
 import 'package:vastralaya/models/product/product_model.dart';
+import 'package:vastralaya/models/product/search_model.dart';
 import 'package:vastralaya/services/product/product_service.dart';
 
 class ProductController extends GetxController {
@@ -12,6 +13,10 @@ class ProductController extends GetxController {
     totalProducts: null,
   ).obs;
   var productDetail = ProductDetailModel(id: null, name: null, price: null, description: null, rating: null, category: null, imageUrl: [], stock: null, createdBy: null, createdAt: null, updatedAt: null, v: null, reviews: []).obs;
+
+  var isSearching = false.obs;
+  var searchResults = SearchModel(products: [], totalPages: null , totalProducts: null).obs;
+  var searchQuery = "".obs;
 
   Future fetchAllProducts() async {
     try {
@@ -37,11 +42,27 @@ class ProductController extends GetxController {
     }
   }
 
+  Future searchProducts(String name) async {
+    try {
+      isSearching.value = true;
+      searchQuery.value = name;
+      var response = await ProductService.searchProduct(name);
+      if (response != null) {
+        searchResults.value = SearchModel.fromJson(response.data);
+      }
+    } finally {
+      isSearching.value = false;
+    }
+  }
+
+  void clearSearch(){
+    searchQuery.value = "";
+    searchResults = SearchModel(products: [], totalPages: null , totalProducts: null).obs;
+  }
 
   @override
   void onInit() {
     super.onInit();
     fetchAllProducts();
   }
-
 }
