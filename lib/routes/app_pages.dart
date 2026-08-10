@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:vastralaya/admin/views/admin_dashboard_view.dart';
 import 'package:vastralaya/routes/app_routes.dart';
 import 'package:vastralaya/screens/auth_ui/login_view.dart';
 import 'package:vastralaya/screens/auth_ui/register_view.dart';
@@ -14,5 +15,6 @@ class AppPages {
     GetPage(name: AppRoutes.splash, page: () => SplashView()),
     GetPage(name: AppRoutes.home, page: () => HomeView()),
     GetPage(name: AppRoutes.productDetail, page: () => ProductDetailView()),
+    GetPage(name: AppRoutes.adminDashboard, page: () => AdminDashboardView()),
   ];
 }

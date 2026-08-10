@@ -10,8 +10,6 @@ import 'package:vastralaya/utils/app_constant.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
-
-
   final TextEditingController searchController = TextEditingController();
 
   @override

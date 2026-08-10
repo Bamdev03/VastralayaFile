@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialBinding: ControllerBinding(),
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.adminDashboard,
       getPages: AppPages.routes,
     );
   }
