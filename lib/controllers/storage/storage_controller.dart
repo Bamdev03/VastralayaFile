@@ -15,4 +15,14 @@ class StorageController {
   void removeToken(){
     box.remove("token");
   }
+
+  void saveRole(String role){
+    box.write("role", role );
+  }
+
+  String? getRole(){
+    return box.read("role");
+  }
+
+
 }

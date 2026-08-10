@@ -24,16 +24,23 @@ class AuthController extends GetxController {
 
   var isVisible = true.obs;
 
-  Future authCheck() async{
+  Future authCheck() async {
+    final storageController = Get.find<StorageController>();
 
-    var storageController = Get.find<StorageController>();
-    final token = await storageController.getToken();
+    final token =  storageController.getToken();
+    final role =  storageController.getRole();
+
     await Future.delayed(const Duration(seconds: 4));
 
-    if(token!=null){
-      Get.offNamed(AppRoutes.home);
-    }else {
-      Get.offNamed(AppRoutes.login);
+    if (token == null) {
+      Get.offAllNamed(AppRoutes.login);
+      return;
+    }
+
+    if (role == "admin") {
+      Get.offAllNamed(AppRoutes.adminDashboard);
+    } else {
+      Get.offAllNamed(AppRoutes.home);
     }
   }
 
@@ -86,17 +93,32 @@ class AuthController extends GetxController {
   Future login(String email, String password) async {
     try {
       isLoading.value = true;
+
       final response = await AuthService.login(email, password);
+
       loginUser.value = LoginModel.fromJson(response.data);
 
       if (loginUser.value.success == true) {
+        final storageController = Get.find<StorageController>();
 
-        var storageController = Get.find<StorageController>();
-        String? token = loginUser.value.token;
-        storageController.saveToken(token!);
+        final token = loginUser.value.token;
+        final role = loginUser.value.user?.role;
+
+        if (token != null) {
+          storageController.saveToken(token);
+        }
+
+        if (role != null) {
+          storageController.saveRole(role);
+        }
 
         Get.snackbar("Success", "Logged in successfully");
-        Get.offAllNamed(AppRoutes.home);
+
+        if (role == "admin") {
+          Get.offAllNamed(AppRoutes.adminDashboard);
+        } else {
+          Get.offAllNamed(AppRoutes.home);
+        }
       } else {
         Get.snackbar(
           "Failed",
@@ -106,6 +128,7 @@ class AuthController extends GetxController {
       }
     } on DioException catch (e) {
       final errorMsg = _extractErrorMessage(e);
+
       Get.snackbar(
         "Failed",
         errorMsg,
@@ -157,5 +180,10 @@ class AuthController extends GetxController {
     isVisible.value = !isVisible.value;
   }
 
-
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    authCheck();
+  }
 }
