@@ -100,7 +100,6 @@ class AuthController extends GetxController {
 
       if (loginUser.value.success == true) {
         final storageController = Get.find<StorageController>();
-
         final token = loginUser.value.token;
         final role = loginUser.value.user?.role;
 

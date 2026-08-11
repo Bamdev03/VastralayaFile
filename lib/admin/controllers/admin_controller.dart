@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:vastralaya/admin/models/admin_stats_model.dart';
+import 'package:vastralaya/admin/models/users_model.dart';
 import 'package:vastralaya/admin/services/admin_service.dart';
 
 class AdminController extends GetxController {
@@ -13,6 +14,7 @@ class AdminController extends GetxController {
     totalEarnings: null,
     monthlyEarnings: [],
   ).obs;
+  var allUsers = UsersModel(users: []).obs;
 
   Future fetchAdminStat() async {
     try {
@@ -26,9 +28,16 @@ class AdminController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchAdminStat();
+  Future fetchAllUsers() async {
+    try {
+      isLoading.value = true;
+      var response = await AdminService.getAllUsers();
+      if (response != null) {
+        allUsers.value = UsersModel.fromJson(response.data);
+      }
+    } finally {
+      isLoading.value = false;
+    }
   }
+
 }

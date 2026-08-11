@@ -9,4 +9,5 @@ class AppRoutes {
    static String order = '/order';
    static String orderComplete = '/orderComplete';
    static String adminDashboard = '/adminDashboard';
+   static String users = '/users';
 }

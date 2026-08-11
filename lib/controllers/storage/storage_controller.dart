@@ -15,6 +15,11 @@ class StorageController {
   void removeToken(){
     box.remove("token");
   }
+  
+  void removeRole(){
+    box.remove("role");
+  }
+
 
   void saveRole(String role){
     box.write("role", role );
