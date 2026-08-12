@@ -26,46 +26,48 @@ class _AdminDashboardViewState extends State<AdminDashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Admin Dashboard',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-        centerTitle: true,
-      ),
-      drawer: _buildDrawer(),
-      body: Obx(() {
-        if (adminController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final stats = adminController.adminStats.value;
-        return RefreshIndicator(
-          onRefresh: adminController.fetchAdminStat,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Overview',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
-                ),
-                const Gap(5),
-                const Text(
-                  'Manage and monitor Vastralaya',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
-                ),
-                const Gap(25),
-                _buildStatsGrid(stats),
-                const Gap(30),
-              ],
-            ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Admin Dashboard',
+            style: TextStyle(fontWeight: FontWeight.w700),
           ),
-        );
-      }),
+          centerTitle: true,
+        ),
+        drawer: _buildDrawer(),
+        body: Obx(() {
+          if (adminController.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+      
+          final stats = adminController.adminStats.value;
+          return RefreshIndicator(
+            onRefresh: adminController.fetchAdminStat,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Overview',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                  ),
+                  const Gap(5),
+                  const Text(
+                    'Manage and monitor Vastralaya',
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
+                  const Gap(25),
+                  _buildStatsGrid(stats),
+                  const Gap(30),
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 

@@ -174,6 +174,14 @@ class SingleUserView extends StatelessWidget {
               ),
 
               const Gap(20),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(onPressed: (){}, child: Text("Edit")),
+                  ElevatedButton(onPressed: (){}, child: Text("Delete")),
+                ],
+              )
             ],
           ),
         ),
