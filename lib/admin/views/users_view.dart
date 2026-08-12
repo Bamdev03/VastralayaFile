@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:vastralaya/admin/controllers/admin_controller.dart';
+import 'package:vastralaya/routes/app_routes.dart';
 
 class UsersView extends StatefulWidget {
   const UsersView({super.key});
@@ -45,8 +47,11 @@ class _UsersViewState extends State<UsersView> {
           itemBuilder: (context, index) {
             final user = users[index];
             return GestureDetector(
-              onTap: (){
-
+              onTap: () async{
+                Loader.show(context);
+                await adminController.fetchOneUser(user.id!);
+                Loader.hide();
+                Get.toNamed(AppRoutes.singleUser);
               },
               child: Card(
                 child: ListTile(
