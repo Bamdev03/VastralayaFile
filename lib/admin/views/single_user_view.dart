@@ -183,7 +183,230 @@ class SingleUserView extends StatelessWidget {
                         ),
                         foregroundColor: WidgetStatePropertyAll(Colors.black),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        final nameController = TextEditingController(
+                          text: user.name ?? '',
+                        );
+
+                        final emailController = TextEditingController(
+                          text: user.email ?? '',
+                        );
+
+                        final phoneController = TextEditingController(
+                          text: user.phone ?? '',
+                        );
+
+                        final cityController = TextEditingController(
+                          text: user.address?.city ?? '',
+                        );
+
+
+                        String selectedRole = user.role ?? 'user';
+                        bool isActive = user.isActive ?? true;
+
+                        Get.dialog(
+                          StatefulBuilder(
+                            builder: (context, setState) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'Edit User',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+
+                                content: SizedBox(
+                                  width: 400,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // Name
+                                        TextField(
+                                          controller: nameController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Name',
+                                            prefixIcon: Icon(
+                                              Icons.person_outline,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+
+                                        const Gap(12),
+
+                                        // Email
+                                        TextField(
+                                          controller: emailController,
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Email',
+                                            prefixIcon: Icon(
+                                              Icons.email_outlined,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+
+                                        const Gap(12),
+
+                                        // Phone
+                                        TextField(
+                                          controller: phoneController,
+                                          keyboardType: TextInputType.phone,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Phone',
+                                            prefixIcon: Icon(
+                                              Icons.phone_outlined,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+
+                                        const Gap(12),
+
+                                        // City
+                                        TextField(
+                                          controller: cityController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'City',
+                                            prefixIcon: Icon(
+                                              Icons.location_city_outlined,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                          ),
+                                        ),
+
+                                        const Gap(12),
+
+                                        // Role
+                                        DropdownButtonFormField<String>(
+                                          initialValue: selectedRole,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Role',
+                                            prefixIcon: Icon(
+                                              Icons
+                                                  .admin_panel_settings_outlined,
+                                            ),
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          items: const [
+                                            DropdownMenuItem(
+                                              value: 'user',
+                                              child: Text('User'),
+                                            ),
+                                            DropdownMenuItem(
+                                              value: 'Merchant',
+                                              child: Text('Merchant'),
+                                            ),
+                                            DropdownMenuItem(
+                                              value: 'Admin',
+                                              child: Text('Admin'),
+                                            ),
+                                          ],
+                                          onChanged: (value) {
+                                            if (value != null) {
+                                              setState(() {
+                                                selectedRole = value;
+                                              });
+                                            }
+                                          },
+                                        ),
+
+                                        const Gap(8),
+
+                                        // Active / Inactive
+                                        SwitchListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          title: const Text('Active Account'),
+                                          subtitle: Text(
+                                            isActive
+                                                ? 'User can access the account'
+                                                : 'User account is inactive',
+                                          ),
+                                          value: isActive,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isActive = value;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                actions: [
+                                  // Cancel
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    child: const Text('Cancel'),
+                                  ),
+
+                                  // Update
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      // Basic validation
+                                      if (nameController.text.trim().isEmpty ||
+                                          emailController.text.trim().isEmpty ||
+                                          phoneController.text.trim().isEmpty) {
+                                        Get.snackbar(
+                                          'Invalid Input',
+                                          'Name, email and phone are required.',
+                                        );
+                                        return;
+                                      }
+
+                                      // Close dialog
+                                      Get.back();
+
+                                      // Show loader
+                                      Loader.show(context);
+
+                                      try {
+                                        await adminController.updateUser(
+                                          id: user.id!,
+                                          name: nameController.text.trim(),
+                                          email: emailController.text.trim(),
+                                          phone: phoneController.text.trim(),
+                                          city: cityController.text.trim(),
+                                          role: selectedRole,
+                                          isActive: isActive,
+                                        );
+
+                                        // Refresh users and dashboard statistics
+                                        await adminController.fetchAllUsers();
+                                        await adminController.fetchAdminStat();
+
+                                        Loader.hide();
+
+                                        Get.offNamed(AppRoutes.adminDashboard);
+
+                                        Get.snackbar(
+                                          'Success',
+                                          'User updated successfully',
+                                          snackPosition: SnackPosition.TOP,
+                                        );
+                                      } catch (e) {
+                                        Loader.hide();
+
+                                        Get.snackbar(
+                                          'Error',
+                                          'Failed to update user',
+                                          snackPosition: SnackPosition.BOTTOM,
+                                        );
+                                      }
+                                    },
+                                    child: const Text('Update'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      },
+
                       child: Text("Edit"),
                     ),
                   ),
@@ -197,7 +420,7 @@ class SingleUserView extends StatelessWidget {
                         ),
                         foregroundColor: WidgetStatePropertyAll(Colors.black),
                       ),
-                      onPressed: () async{
+                      onPressed: () async {
                         Loader.show(context);
                         await adminController.deleteUser(user.id!);
                         await adminController.fetchAllUsers();

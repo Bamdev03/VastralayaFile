@@ -35,6 +35,36 @@ class AdminService {
     return response;
   }
 
+static Future updateUser(
+  String id, {
+  required String name,
+  required String email,
+  required String phone,
+  required String city,
+  required String role,
+  required bool isActive,
+}) async {
+  final controller = Get.find<StorageController>();
+  final token = controller.getToken();
 
+  ApiConnect.dio.options.headers["Authorization"] = "Bearer $token";
 
+  final data = {
+    "name": name,
+    "email": email,
+    "phone": phone,
+    "role": role,
+    "isActive": isActive,
+    "address": {
+      "city": city,
+    },
+  };
+
+  final response = await ApiConnect.dio.put(
+    "/users/$id",
+    data: data,
+  );
+
+  return response;
+}
 }

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:vastralaya/admin/models/admin_stats_model.dart';
 import 'package:vastralaya/admin/models/delete_user_model.dart';
 import 'package:vastralaya/admin/models/one_user_model.dart';
+import 'package:vastralaya/admin/models/update_user_model.dart';
 import 'package:vastralaya/admin/models/users_model.dart';
 import 'package:vastralaya/admin/services/admin_service.dart';
 
@@ -19,6 +20,7 @@ class AdminController extends GetxController {
   var allUsers = UsersModel(users: []).obs;
   var oneUser = OneUserModel(success: false, user: null).obs;
   var deletedResponse = DeleteUserModel(success: false, message: null).obs;
+  var updateResponse = UpdateUserModel(success: false, user: null).obs;
 
   Future fetchAdminStat() async {
     try {
@@ -62,7 +64,7 @@ class AdminController extends GetxController {
       var response = await AdminService.deleteUser(id);
       if (response != null) {
         deletedResponse.value = DeleteUserModel.fromJson(response.data);
-        if(deletedResponse.value.success == true){
+        if (deletedResponse.value.success == true) {
           Get.snackbar("Success", "User deleted successfully");
         }
       }
@@ -71,4 +73,34 @@ class AdminController extends GetxController {
     }
   }
 
+  Future<void> updateUser({
+    required String id,
+    required String name,
+    required String email,
+    required String phone,
+    required String city,
+    required String role,
+    required bool isActive,
+  }) async {
+    try {
+      isLoading.value = true;
+      var response = await AdminService.updateUser(
+        id,
+        name: name,
+        email: email,
+        phone: phone,
+        city: city,
+        role: role,
+        isActive: isActive,
+      );
+      if (response != null) {
+        updateResponse.value = UpdateUserModel.fromJson(response.data);
+        if (updateResponse.value.success == true) {
+          Get.snackbar("Success", "User updated successfully");
+        }
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }
