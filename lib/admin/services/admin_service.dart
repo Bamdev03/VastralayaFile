@@ -26,5 +26,15 @@ class AdminService {
     return response;
   }
 
+  static Future deleteUser(String id) async {
+    var controller = Get.find<StorageController>();
+    final token = controller.getToken();
+
+    ApiConnect.dio.options.headers["Authorization"] = "Bearer $token";
+    var response = await ApiConnect.dio.delete("/users/$id");
+    return response;
+  }
+
+
 
 }

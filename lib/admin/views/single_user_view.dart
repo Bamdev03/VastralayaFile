@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:vastralaya/admin/controllers/admin_controller.dart';
+import 'package:vastralaya/routes/app_routes.dart';
 
 class SingleUserView extends StatelessWidget {
   const SingleUserView({super.key});
@@ -16,9 +18,7 @@ class SingleUserView extends StatelessWidget {
         appBar: AppBar(
           title: const Text(
             'User Details',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
         ),
@@ -35,16 +35,13 @@ class SingleUserView extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                  ),
+                  border: Border.all(color: Theme.of(context).dividerColor),
                 ),
                 child: Column(
                   children: [
                     CircleAvatar(
                       radius: 42,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       child: Text(
                         (user.name?.isNotEmpty ?? false)
                             ? user.name![0].toUpperCase()
@@ -98,9 +95,7 @@ class SingleUserView extends StatelessWidget {
                           ),
                           const Gap(7),
                           Text(
-                            user.isActive == true
-                                ? 'Active'
-                                : 'Inactive',
+                            user.isActive == true ? 'Active' : 'Inactive',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: user.isActive == true
@@ -176,12 +171,45 @@ class SingleUserView extends StatelessWidget {
               const Gap(20),
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(onPressed: (){}, child: Text("Edit")),
-                  ElevatedButton(onPressed: (){}, child: Text("Delete")),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          const Color.fromARGB(255, 124, 196, 254),
+                        ),
+                        foregroundColor: WidgetStatePropertyAll(Colors.black),
+                      ),
+                      onPressed: () {},
+                      child: Text("Edit"),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          const Color.fromARGB(255, 255, 137, 137),
+                        ),
+                        foregroundColor: WidgetStatePropertyAll(Colors.black),
+                      ),
+                      onPressed: () async{
+                        Loader.show(context);
+                        await adminController.deleteUser(user.id!);
+                        await adminController.fetchAllUsers();
+                        await adminController.fetchAdminStat();
+                        Loader.hide();
+                        Get.offNamed(AppRoutes.adminDashboard);
+                      },
+                      child: Text("Delete"),
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -194,10 +222,7 @@ class SingleUserView extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -215,19 +240,14 @@ class SingleUserView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-        ),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .primary
-                  .withOpacity(0.08),
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
@@ -243,10 +263,7 @@ class SingleUserView extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
                 const Gap(3),
                 Text(

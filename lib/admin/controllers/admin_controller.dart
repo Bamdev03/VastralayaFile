@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:vastralaya/admin/models/admin_stats_model.dart';
+import 'package:vastralaya/admin/models/delete_user_model.dart';
 import 'package:vastralaya/admin/models/one_user_model.dart';
 import 'package:vastralaya/admin/models/users_model.dart';
 import 'package:vastralaya/admin/services/admin_service.dart';
@@ -18,6 +18,7 @@ class AdminController extends GetxController {
   ).obs;
   var allUsers = UsersModel(users: []).obs;
   var oneUser = OneUserModel(success: false, user: null).obs;
+  var deletedResponse = DeleteUserModel(success: false, message: null).obs;
 
   Future fetchAdminStat() async {
     try {
@@ -55,5 +56,19 @@ class AdminController extends GetxController {
     }
   }
 
+  Future deleteUser(String id) async {
+    try {
+      isLoading.value = true;
+      var response = await AdminService.deleteUser(id);
+      if (response != null) {
+        deletedResponse.value = DeleteUserModel.fromJson(response.data);
+        if(deletedResponse.value.success == true){
+          Get.snackbar("Success", "User deleted successfully");
+        }
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
 }
